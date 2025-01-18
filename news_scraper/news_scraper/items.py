@@ -11,7 +11,7 @@ class ArticleItem(scrapy.Item):
 # ...
 # //*[@id="lists"]/li[50]
 
-
+/html/body/div[2]/div/div[1]/div/h1
 # path of u 
 # /html/body/div[2]/div/div[1]/div/h1...title
 # /html/body/div[2]/div/div[1]/div/div[2]/div/ul/li[1].. view
@@ -33,3 +33,7 @@ class ArticleItem(scrapy.Item):
 
 # //*[@id="lists"]/li[7]/div[1]/h4
 # //*[@id="lists"]/li[8]/div[1]/h4
+
+//*[@id="lists"]/li[7]/div[1]/h4/a
+//*[@id="lists"]/li[8]/div[1]/h4/a
+//*[@id="lists"]/li[7]/div[1]/h4/a
