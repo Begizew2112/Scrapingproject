@@ -37,10 +37,6 @@ class FromGeekScraper:
         """Open the base URL of the website."""
         self.driver.get(url)
 
-    def close(self):
-        """Close the browser."""
-        self.driver.quit()
-
 # Run the pagination test
 scraper = FromGeekScraper()
 scraper.open_page(scraper.base_url)

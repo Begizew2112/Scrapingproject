@@ -39,7 +39,6 @@ pip-log.txt
 pip-delete-this-directory.txt
 data/ 
 data2/
-scrapers/
 spiders/
 # Unit test / coverage reports
 htmlcov/
