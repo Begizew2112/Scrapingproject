@@ -2,10 +2,10 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
 # C extensions
 *.so
 venv/
+spiders/
 # Distribution / packaging
 .Python
 build/
@@ -19,6 +19,8 @@ lib64/
 parts/
 sdist/
 var/
+.env/
+config/
 wheels/
 share/python-wheels/
 *.egg-info/
@@ -31,18 +33,14 @@ MANIFEST
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
-scraper_file/
-source-scraper/
+scraped_data/
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
 data/ 
 data2/
-data3/
+scrapers/
 spiders/
-new_scrpaer/
-scraped_data
-sources_scraper/
 # Unit test / coverage reports
 htmlcov/
 .tox/
