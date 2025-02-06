@@ -7,7 +7,6 @@ from scrapers.vccircle_venture_capital import VCCirclesVentureCapital# New scrap
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-import time 
 # Choose which scraper to run
 SCRAPER_TO_RUN = "private_equity"  # Change as needed
 
@@ -27,7 +26,9 @@ if __name__ == "__main__":
     else:
         raise ValueError("Invalid scraper selection!")
     # Start scraping the selected scraper
-    scraper.scrape_articles()
+    #scraper.scrape_articles()
+    scraper.run()
+
 
 #from scrapers.fromgeek_scraper import FromGeekScraper
 # # Scraper for French to English
