@@ -42,7 +42,7 @@ data3/
 spiders/
 new_scrpaer/
 scraped_data
-
+sources_scraper/
 # Unit test / coverage reports
 htmlcov/
 .tox/
