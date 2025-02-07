@@ -4,16 +4,14 @@ import os
 import pandas as pd
 from datetime import datetime, timedelta
 from selenium.webdriver.common.by import By
-#from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException
 from scrapers.base_scraper import BaseScraper
-#import json
 from utils.db_utils import insert_page_data
 from utils.selenium_utils import open_website
 from utils.selenium_utils import parse_and_format_date
 from utils.data_utils import load_progress
 from utils.data_utils import save_progress
 from utils.selenium_utils import click_more_button
-from utils.selenium_utils import create_selenium_driver
+#from utils.selenium_utils import create_selenium_driver
 class PrivateEquityScraper(BaseScraper):
     def __init__(self, headless=True, language="en"):
         super().__init__(headless, language)   # Use base scraper's initialization
@@ -22,40 +20,11 @@ class PrivateEquityScraper(BaseScraper):
         self.progress_file = "dealstreet_private_equity.json"
         self.two_months_ago = datetime.now() - timedelta(days=60)
         # Use the utility function to create the WebDriver
-        self.driver = create_selenium_driver(headless)
-    # def open_website(self):
-    #     """Opens the DealStreetAsia Private Equity page."""
-    #     self.driver.get(self.base_url)
-    #     time.sleep(3)
+      #  self.driver = create_selenium_driver(headless)
 
-    # def parse_and_format_date(self, date_str):
-    #     """Parses and reformats the date from the article."""
-    #     try:
-    #         return datetime.strptime(date_str, "%d %B, %Y").strftime("%d ,%m, %Y")
-    #     except ValueError:
-    #         print(f"⚠ Warning: Could not parse date '{date_str}', skipping article.")
-    #         return None
-
-    # def load_progress(self):
-    #     """Load the last scraped article URL from the progress file."""
-    #     if os.path.exists(self.progress_file):
-    #         try:
-    #             with open(self.progress_file, 'r') as f:
-    #                 data = json.load(f)
-    #                 return data.get("last_scraped_url")
-    #         except (json.JSONDecodeError, FileNotFoundError):
-    #             print(" Warning: Progress file is empty or corrupted. Starting from scratch.")
-    #             return None
-    #     return None
-
-    # def save_progress(self, last_scraped_url):
-    #     """Save the last scraped article URL to the progress file."""
-    #     with open(self.progress_file, 'w') as f:
-    #         json.dump({"last_scraped_url": last_scraped_url}, f)
-    
     def scrape_articles(self):
         try:
-            self.driver.get(self.base_url)
+            self.open_page(self.base_url)
             time.sleep(3)
 
             # Load last scraped URL
@@ -145,16 +114,3 @@ class PrivateEquityScraper(BaseScraper):
         finally:
             print(f"\nScraping complete! Data saved to {self.csv_filename}")
             self.driver.quit()  # Ensures the driver is always closed
-
-    # def click_more_button(self):
-    #     """Clicks the 'More' button to load additional articles."""
-    #     try:
-    #         more_button = self.driver.find_element(By.XPATH, '//*[@id="archive-wrapper"]/div[5]/div/button')
-    #         self.driver.execute_script("arguments[0].scrollIntoView(true);", more_button)
-    #         time.sleep(1)
-    #         self.driver.execute_script("arguments[0].click();", more_button)
-    #         time.sleep(5)
-    #         return True
-    #     except (NoSuchElementException, ElementClickInterceptedException):
-    #         print("No 'More' button found or can't be clicked. Stopping.")
-    #         return False 
