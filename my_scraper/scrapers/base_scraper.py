@@ -48,6 +48,7 @@ class BaseScraper:
         return WebDriverWait(self.driver, timeout).until(
             EC.presence_of_element_located((By.XPATH, xpath))
         )
+    
     def close_driver(self):
         """Closes the WebDriver instance."""
         if self.driver:

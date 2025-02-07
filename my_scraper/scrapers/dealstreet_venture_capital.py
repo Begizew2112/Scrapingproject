@@ -59,7 +59,6 @@ class DealStreetScraper(BaseScraper):
                                 last_scraped_index = article_links.index(last_scraped_url) + 1
                             except ValueError:
                                 last_scraped_index = 0
-
                         for i in range(last_scraped_index, len(article_links)):
                             link = article_links[i]
 

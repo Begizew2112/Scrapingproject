@@ -46,3 +46,5 @@ def load_progress(progress_file):
             print("⚠ Warning: Progress file is empty or corrupted. Starting from scratch.")
             return None
     return None
+
+

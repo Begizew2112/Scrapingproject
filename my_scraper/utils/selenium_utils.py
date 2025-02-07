@@ -61,6 +61,32 @@ def parse_and_format_date(date_str):
         return None 
 
 
+
+def get_page_number_by_url(self, url):
+    """Given a URL, find the page number where this article is located."""
+    self.open_page(self.website)  # Go to the first page
+    page_number = 1
+    while True:
+        articles = self.driver.find_elements(By.XPATH, '//*[@id="__next"]/div/div/div/div[2]/div[1]/div[4]/div')
+        for article in articles:
+            article_url = article.find_element(By.XPATH, './div/div[2]/h4/a').get_attribute("href")
+            if article_url == url:
+                return page_number  # Return the page number where the URL was found
+        try:
+            pagination_buttons = self.driver.find_elements(By.XPATH, '//*[@id="__next"]/div/div/div/div[2]/div[1]/ul/li/a')
+            if pagination_buttons:
+                next_button = pagination_buttons[-1]  # Select last pagination button
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", next_button)
+                time.sleep(3)
+                self.driver.execute_script("arguments[0].click();", next_button)
+                page_number += 1
+                time.sleep(5)
+            else:
+                break  # No more pages, stop the loop
+        except NoSuchElementException:
+            break  # No pagination buttons, stop the loop
+    return None  # URL not found (shouldn't happen unless it's removed)
+        
 def click_more_button(driver):
     """Clicks the 'More' button to load additional articles."""
     try:
