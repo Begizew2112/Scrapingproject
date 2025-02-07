@@ -51,6 +51,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from fake_useragent import UserAgent
 
+#create fault api adress to drease banning from the website
 def create_selenium_driver(headless=True):
     """
     Creates a Selenium WebDriver instance with a random User-Agent and optional headless mode.
