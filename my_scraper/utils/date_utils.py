@@ -32,3 +32,17 @@ def wait_for_element(driver, xpath, timeout=10):
     return WebDriverWait(driver, timeout).until(
         EC.presence_of_element_located((By.XPATH, xpath))
     )
+import os
+import json
+
+def load_progress(progress_file):
+    """Load the last scraped article URL from the progress file."""
+    if os.path.exists(progress_file):
+        try:
+            with open(progress_file, 'r') as f:
+                data = json.load(f)
+                return data.get("last_scraped_url")
+        except (json.JSONDecodeError, FileNotFoundError):
+            print("⚠ Warning: Progress file is empty or corrupted. Starting from scratch.")
+            return None
+    return None
