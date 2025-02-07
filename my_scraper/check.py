@@ -1,25 +1,26 @@
 import time
 import csv
+from datetime import datetime, timedelta
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+import time
+import csv  
 import os
-import json
-import pandas as pd
 from datetime import datetime, timedelta
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import (
-    NoSuchElementException,
-    ElementClickInterceptedException
-)
+from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException
 from scrapers.base_scraper import BaseScraper
-from utils.db_utils import insert_page_data  # If needed
+import json
+from utils.db_utils import insert_page_data
 
-class DealStreetScraper(BaseScraper):
+class PrivateEquityScraper(BaseScraper):
     def __init__(self, headless=True, language="en"):
         super().__init__(headless, language)   # Use base scraper's initialization
-        self.base_url = "https://www.dealstreetasia.com/section/venture-capital"
-        self.csv_filename = "dealstreet_capital.csv"
-        self.progress_file = "dealstreet_capital.json"
+        self.base_url = "https://www.dealstreetasia.com/section/private-equity"
+        self.csv_filename = "dealstreet_private_equity.csv"
+        self.progress_file = "dealstreet_private_equity.json"
         self.two_months_ago = datetime.now() - timedelta(days=60)
 
     def open_website(self):
@@ -46,61 +47,41 @@ class DealStreetScraper(BaseScraper):
                 print(" Warning: Progress file is empty or corrupted. Starting from scratch.")
                 return None
         return None
+
     def save_progress(self, last_scraped_url):
         """Save the last scraped article URL to the progress file."""
         with open(self.progress_file, 'w') as f:
             json.dump({"last_scraped_url": last_scraped_url}, f)
+
     def scrape_articles(self):
         try:
             self.open_page(self.base_url)
             time.sleep(3)
-
-            # Load last scraped URL
-            last_scraped_url = self.load_progress()
-
-            # Check if file exists and has data
-            file_exists = os.path.exists(self.csv_filename)
-            existing_urls = set()
-
-            if file_exists:
-                try:
-                    existing_data = pd.read_csv(self.csv_filename)
-                    existing_urls = set(existing_data["URL"].tolist())  # Store previously scraped URLs
-                except Exception as e:
-                    print(f"⚠ Warning: Could not read existing CSV ({e}). Starting fresh.")
-
-            with open(self.csv_filename, mode='a', newline='', encoding='utf-8') as file:
+            
+            with open(self.csv_filename, mode='w', newline='', encoding='utf-8') as file:
                 writer = csv.writer(file)
-
-                # Write header only if the file doesn't exist or is empty
-                if not file_exists or os.stat(self.csv_filename).st_size == 0:
-                    writer.writerow(["Title", "Source", "Date", "Article Content", "URL"])
-
+                writer.writerow(["Title", "Source", "Date", "Article Content", "URL"])
+                
                 last_article_old = False
                 last_scraped_index = 0
-
+                
+                last_scraped_url = self.load_progress()
+                
                 while not last_article_old:
                     articles = self.driver.find_elements(By.XPATH, '//*[@id="archive-wrapper"]/div[4]/div[1]/div/div')
                     article_links = [article.find_element(By.XPATH, './div[1]/a').get_attribute('href') for article in articles]
-
-                    # Find the index of the last scraped article
+                    
                     if last_scraped_url:
                         try:
-                            last_scraped_index = article_links.index(last_scraped_url) + 1
+                            last_scraped_index = article_links.index(last_scraped_url) + 1  # Move to next article
                         except ValueError:
                             last_scraped_index = 0
 
                     for i in range(last_scraped_index, len(article_links)):
                         link = article_links[i]
-
-                        # Skip if already saved
-                        if link in existing_urls:
-                            print(f"Skipping already saved article: {link}")
-                            continue
-
                         self.driver.get(link)
                         time.sleep(2)
-
+                        
                         try:
                             title = self.driver.find_element(By.XPATH, '//*[@id="disable-copy"]/h1').text.strip()
                             source = self.driver.find_element(By.XPATH, '//*[@id="disable-copy"]/div[2]/div[1]/div/div[1]/span/a').text.strip()
@@ -116,20 +97,20 @@ class DealStreetScraper(BaseScraper):
                                 break
 
                             writer.writerow([title, source, formatted_date, body, link])
-                            print(f" Saved article: {title} - {formatted_date}")
+                            print(f"Saved article: {title} - {formatted_date}")
 
-                            self.save_progress(link)  # Save progress after each successful write
-
+                            self.save_progress(link)  # Save after successful write
+                        
                         except Exception as e:
-                            print(f" Error extracting article data from {link}: {e}")
-
+                            print(f"Error extracting article data from {link}: {e}")
+                        
                         last_scraped_index = i + 1
                         self.driver.back()
                         time.sleep(2)
-
+                    
                     if last_article_old:
                         break
-
+                    
                     if not self.click_more_button():
                         break
         finally:
@@ -147,4 +128,4 @@ class DealStreetScraper(BaseScraper):
             return True
         except (NoSuchElementException, ElementClickInterceptedException):
             print("No 'More' button found or can't be clicked. Stopping.")
-            return False
+            return False 

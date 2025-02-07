@@ -26,8 +26,8 @@ if __name__ == "__main__":
     else:
         raise ValueError("Invalid scraper selection!")
     # Start scraping the selected scraper
-    #scraper.scrape_articles()
-    scraper.run()
+    scraper.scrape_articles()
+    #scraper.run()
 
 
 #from scrapers.fromgeek_scraper import FromGeekScraper
