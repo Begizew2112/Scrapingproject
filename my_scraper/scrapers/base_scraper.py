@@ -8,6 +8,12 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from webdriver_manager.chrome import ChromeDriverManager
 from utils.selenium_utils import configure_translation_options
+import time
+import os
+import json
+from datetime import datetime, timedelta
+
+from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException
 
 class BaseScraper:
     def __init__(self, headless=True, source_lang="zh-CN", target_lang="en"):
