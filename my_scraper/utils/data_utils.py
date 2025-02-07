@@ -1,6 +1,6 @@
 import os
 import json
-
+#from scrapers.base_scraper import BaseScraper
 def load_progress(progress_file):
     """Load the last scraped article URL from the progress file."""
     if os.path.exists(progress_file):
