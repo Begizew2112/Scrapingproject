@@ -22,6 +22,7 @@ def save_progress(last_scraped_url, last_page_url, progress_file):
     os.makedirs(os.path.dirname(progress_file), exist_ok=True)  # Ensure the directory exists
     with open(progress_file, 'w') as f:
         json.dump({"last_scraped_url": last_scraped_url, "last_page_url": last_page_url}, f)
+        
 def _init_csv(self):
     """Initialize CSV file with headers if it doesn't already exist."""
     if not os.path.exists(self.csv_filename):

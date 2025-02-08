@@ -20,20 +20,6 @@ class VCCirclesVentureCapital(BaseScraper):
         self.progress_file = "C:/Users/Yibabe/Desktop/Scrapingproject/my_scraper/vccircle_venture.json"  # Store last scraped URL
         self.two_months_ago = datetime.now() - timedelta(days=60)
         self.scraped_urls = set()
-    # def _init_csv(self):
-    #     """Initialize CSV file with headers if it doesn't already exist."""
-    #     if not os.path.exists(self.csv_filename):
-    #         with open(self.csv_filename, mode='a', newline='', encoding='utf-8') as file:  # Open CSV in append mode
-    #             writer = csv.writer(file)
-    #             writer.writerow(["Title", "Source", "Date", "Article Content", "URL"])
-
-    # def parse_and_format_date(self, date_str):
-    #     """Convert '14 January, 2025' into '14 - 01 - 2025'."""
-    #     try:
-    #         parsed_date = datetime.strptime(date_str, "%d %B, %Y")
-    #         return parsed_date.strftime("%d - %m - %Y")
-    #     except ValueError:
-    #         return None
       
     def scrape_articles(self):
         """Scrape articles from VCCircle PE section."""
