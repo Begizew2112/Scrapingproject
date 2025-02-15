@@ -8,7 +8,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 # Choose which scraper to run
-SCRAPER_TO_RUN = "fromgeek"  # Change as needed
+SCRAPER_TO_RUN = "private_equity"  # Change as needed
 
 if __name__ == "__main__":
     if SCRAPER_TO_RUN == "dealstreet":
