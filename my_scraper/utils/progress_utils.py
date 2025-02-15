@@ -1,8 +1,6 @@
 import os
 import json
 import csv
-import os
-import json
 
 def load_progress(progress_file):
     """Load last scraped article URL and page URL from the progress file."""
